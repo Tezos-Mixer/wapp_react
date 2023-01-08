@@ -7,6 +7,8 @@ export function generateDepositNote(): string {
 
     while (depositNote.length < requiredLength) {
         const bytes = randomBytes(40);
+
+        // eslint-disable-next-line no-loop-func
         bytes.forEach(b => {
             // Length of `chars` is 62. We only take bytes between 0 and 62*4-1
             // (both inclusive). The value is then evenly mapped to indices of `char`
@@ -17,6 +19,7 @@ export function generateDepositNote(): string {
             }
         });
     }
+
     return depositNote;
 }
 

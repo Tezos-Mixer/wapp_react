@@ -18,7 +18,7 @@ export default function Header() {
                 setChecked(true);
             }
         }
-    }, [storageLoaded, dark])
+    }, [storageLoaded, dark, setDark])
 
     return (
         <div className={styles.container}>
