@@ -1,0 +1,152 @@
+.container {
+    padding: 0 2rem;
+}
+
+.main {
+    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    margin: 20px 10px;
+    padding: 10px 20px;
+    border-width: thin;
+    border-style: solid;
+    border-color: var(--lighter-dark-blue);
+    border-radius: 10px;
+    box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .3);
+}
+
+.flex {
+    display: flex;
+}
+
+.logo {
+    height: 1em;
+    margin-left: 0.5rem;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.muted {
+    opacity: .3;
+    margin-left: 5px;
+    font-size: small;
+}
+
+.link {
+    opacity: .3;
+    margin-left: 5px;
+    font-size: small;
+    transition: opacity .2s;
+}
+
+.link:hover {
+    opacity: .7;
+}
+
+.action {
+    animation: lighten .5s;
+    background: var(--blue);
+    background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
+    cursor: pointer;
+    opacity: 1;
+}
+
+.action:hover {
+    animation: darken .5s;
+    opacity: .8;
+}
+
+.disabled {
+    background: var(--blue);
+    background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
+    opacity: .3;
+}
+
+@keyframes darken {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .8;
+    }
+}
+
+@keyframes lighten {
+    0% {
+        opacity: .8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.unselected {
+    animation: fadeOut .5s;
+    background: var(--lighter-dark-blue);
+    opacity: .5;
+    cursor: pointer;
+}
+
+.unselected:hover {
+    animation: fadeIn .5s;
+    opacity: 1;
+}
+
+.selected {
+    background: var(--blue);
+    background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
+    cursor: default;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: .5
+    }
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1
+    }
+    100% {
+        opacity: .5
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .card,
+    .footer {
+        border-color: #222;
+    }
+
+    .code {
+        background: #111;
+    }
+
+    .logo img {
+        filter: invert(1);
+    }
+}

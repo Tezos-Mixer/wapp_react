@@ -1,0 +1,99 @@
+.container {
+    top: 0;
+    padding-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.theme {
+    position: relative;
+    top: -10px;
+}
+
+.moon {
+    position: absolute;
+    font-size: large;
+    top: 30px;
+    right: 15px;
+    z-index: 1;
+}
+
+.sun {
+    position: absolute;
+    font-size: large;
+    top: 30px;
+    left: 20px;
+    z-index: 1;
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bold;
+    background: -webkit-linear-gradient(1turn, var(--blue), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.wallet {
+    animation: lighten .5s;
+    background: var(--blue);
+    background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
+    opacity: 1;
+}
+
+.wallet:hover {
+    animation: darken .5s;
+    opacity: .8;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin-right: 10px;
+    background-color: #02f802;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.muted {
+    opacity: .3;
+    margin-left: 5px;
+    font-size: small;
+}
+
+.connected {
+    animation: lighten .5s;
+    background: var(--lighter-dark-blue);
+    opacity: 1;
+}
+
+.connected:hover {
+    animation: darken .5s;
+    opacity: .8;
+}
+
+@keyframes darken {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: .8;
+    }
+}
+
+@keyframes lighten {
+    0% {
+        opacity: .8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.flex {
+    display: flex;
+    align-items: center;
+}

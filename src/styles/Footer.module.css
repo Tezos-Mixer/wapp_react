@@ -1,0 +1,11 @@
+.container {
+    bottom: 0;
+    padding-bottom: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 6em;
+}
+
+.text {
+    display: inline-flex;
+}
