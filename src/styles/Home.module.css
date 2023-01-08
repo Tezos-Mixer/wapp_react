@@ -4,8 +4,6 @@
 
 .main {
     padding: 4rem 0;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -16,14 +14,25 @@
     align-items: center;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
 .card {
-    margin: 20px 10px;
-    padding: 10px 20px;
+    margin: 10px 10px;
+    padding: 20px 20px;
     border-width: thin;
     border-style: solid;
     border-color: var(--lighter-dark-blue);
-    border-radius: 10px;
+    border-radius: 30px;
     box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .3);
+    scale: 1;
+    transition: scale .2s ease-in-out;
+}
+
+.card:hover {
+    scale: 1.03;
 }
 
 .flex {
