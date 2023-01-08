@@ -18,7 +18,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "compilerOptions": {
+      "paths": {
+        "stream": [
+          "./node_modules/readable-stream"
+        ]
+      }
+    }
   },
   "include": [
     "src"
