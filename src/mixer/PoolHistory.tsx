@@ -58,7 +58,8 @@ export default function PoolHistory() {
                 .then((calls: Transaction[]) => {
                     return calls
                         .filter((call: Transaction) => call.type === "transaction")
-                        .sort((a, b) => b.id - a.id);
+                        .sort((a, b) => b.id - a.id)
+                        .slice(0, 4);
                 })
                 .then((transactions: Transaction[]) => {
                     const array: Transaction[] = [];
@@ -66,7 +67,6 @@ export default function PoolHistory() {
                         array.push(transaction);
                     })
                     setTransactions(array);
-                    console.log(transactions);
                 })
                 .catch((error) => console.log(error))
         }
