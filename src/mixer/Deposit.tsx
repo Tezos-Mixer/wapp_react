@@ -58,7 +58,9 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                    handleClose={() => setShowModal(false)}
             />
             {address && <>
-                <h3>Current balance</h3>
+                <div className={styles.center}>
+                    <h3>Current balance</h3>
+                </div>
                 <input
                     value={balance + " ꜩ"}
                     disabled={true}
