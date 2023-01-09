@@ -9,7 +9,6 @@ import {char2Bytes} from "@taquito/utils";
 import {hash} from "../utils/maths";
 import {getPoolAddress} from "../utils/pool";
 import Note from "./Note";
-import Pools from "./Pools";
 
 export default function Deposit(props: { pool: number, setPool: (pool: number) => void, mixingFees: number }) {
     const [showModal, setShowModal] = useState(false);
@@ -53,7 +52,7 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
     }
 
     return (
-        <div className={styles.card}>
+        <div>
             <Modal content={<Note txUrl={txUrl} depositNote={"depositNote"} handleClose={() => setShowModal(false)}/>}
                    show={showModal}
                    handleClose={() => setShowModal(false)}
@@ -66,14 +65,6 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                 />
                 <hr/>
             </>}
-            <div className={"center"}>
-                <h2>
-                    Amount to mix
-                </h2>
-            </div>
-            <p/>
-            <Pools pool={props.pool} setPool={props.setPool}/>
-            <hr/>
             <div className={"center"}>
                 <b>
                     Selected pool
@@ -95,9 +86,9 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
             />
             <hr/>
             <div className={"center"}>
-                <h2>
+                <h3>
                     Total mixed amount
-                </h2>
+                </h3>
             </div>
             <input
                 value={props.pool - props.mixingFees + " ꜩ"}

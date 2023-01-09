@@ -33,7 +33,7 @@ interface Transaction {
     volume: number;
 }
 
-export default function PoolHistory() {
+export default function PoolHistory(props: { selected: string }) {
     const contractAddress = process.env.REACT_APP_10_XTZ_POOL_CONTRACT_ADDRESS;
     const {mainnet} = useContext(NetworkContext);
 
@@ -59,7 +59,6 @@ export default function PoolHistory() {
                     return calls
                         .filter((call: Transaction) => call.type === "transaction")
                         .sort((a, b) => b.id - a.id)
-                        .slice(0, 4);
                 })
                 .then((transactions: Transaction[]) => {
                     const array: Transaction[] = [];
@@ -70,13 +69,14 @@ export default function PoolHistory() {
                 })
                 .catch((error) => console.log(error))
         }
-    }, [url, transactionsLoaded]);
+    }, [url, transactionsLoaded, props.selected]);
 
     return (
         <div className={styles.card}>
             <div className={styles.center}><h3>Last pool contract calls</h3></div>
             <hr/>
             {transactions.map((transaction: Transaction) => (
+                transaction.parameters.entrypoint === props.selected &&
                 <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}>
                     <div className={styles.transaction}>
                         <span className={styles.date}>

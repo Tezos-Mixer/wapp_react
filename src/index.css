@@ -80,10 +80,6 @@ input {
     margin: 10px 0;
 }
 
-input:hover {
-    transform: scale(1.05);
-}
-
 input:focus-visible {
     outline: 1px solid var(--white);
 }

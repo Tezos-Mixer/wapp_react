@@ -1,6 +1,5 @@
 import {useContext, useState} from "react";
 import styles from "../styles/Home.module.css"
-import Pools from "./Pools";
 import toast from "react-hot-toast";
 import {getPoolAddress} from "../utils/pool";
 import {WalletContext} from "../tezos/WalletContext";
@@ -59,13 +58,7 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
     }
 
     return (
-        <div className={styles.card}>
-            <div className={"center"}>
-                <h2>Pool to withdraw from</h2>
-            </div>
-            <p/>
-            <Pools pool={props.pool} setPool={props.setPool}/>
-            <hr/>
+        <div>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setLoading(true);

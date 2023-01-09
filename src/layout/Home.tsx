@@ -4,6 +4,7 @@ import Deposit from "../mixer/Deposit";
 import PoolHistory from "../mixer/PoolHistory";
 import Withdraw from "../mixer/Withdraw";
 import {PoolStats} from "../mixer/PoolStats";
+import Pools from "../mixer/Pools";
 
 export function Home() {
     const [selected, setSelected] = useState("deposit");
@@ -14,37 +15,38 @@ export function Home() {
         <div className={styles.container}>
             <main className={styles.main}>
                 <div className={styles.center}>
-                    <div className={styles.card}>
-                        <p/>
-                        <div className={styles.center}>
-                            <div className={styles.flex}>
-                                <button
-                                    className={selected === "deposit" ? styles.selected : styles.unselected}
-                                    onClick={() => setSelected("deposit")}
-                                >
-                                    Deposit
-                                </button>
-                                <button
-                                    className={selected === "withdraw" ? styles.selected : styles.unselected}
-                                    onClick={() => setSelected("withdraw")}
-                                >
-                                    Withdraw
-                                </button>
-                            </div>
-                        </div>
-                        <p/>
-                    </div>
                     <div className={styles.flex}>
                         <div className={styles.column}>
-
-                            {selected === "deposit" ?
-                                <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}/>
-                                :
-                                <Withdraw pool={pool} setPool={setPool}/>
-                            }
+                            <div className={styles.card}>
+                                <div className={styles.center}>
+                                    <div className={styles.flex}>
+                                        <button
+                                            className={selected === "deposit" ? styles.selected : styles.unselected}
+                                            onClick={() => setSelected("deposit")}
+                                        >
+                                            Deposit
+                                        </button>
+                                        <button
+                                            className={selected === "withdraw" ? styles.selected : styles.unselected}
+                                            onClick={() => setSelected("withdraw")}
+                                        >
+                                            Withdraw
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <p/>
+                                <Pools pool={pool} setPool={setPool}/>
+                                <hr/>
+                                {selected === "deposit" ?
+                                    <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}/>
+                                    :
+                                    <Withdraw pool={pool} setPool={setPool}/>
+                                }
+                            </div>
                         </div>
                         <div className={styles.column}>
-                            <PoolHistory/>
+                            <PoolHistory selected={selected}/>
                             <PoolStats/>
                         </div>
                     </div>
