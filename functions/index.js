@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
-const {Sotez} = require("sotez");
 const {char2Bytes} = require("@taquito/utils");
+const {TezosToolkit} = require('@taquito/taquito');
+const {InMemorySigner} = require('@taquito/signer');
+
 
 exports.withdrawFromPool = functions.https.onRequest(async (request, response) => {
     const mainnet = request.query.mainnet;
@@ -24,6 +26,7 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
     functions.logger.info("New withdrawal request to wallet ", destinationAddress, " via ", networkUrl);
     functions.logger.info("Target contract address: ", poolContract);
 
+    /*
     const tezos = new Sotez(networkUrl, {
         defaultFee: 1420,
         useMutez: true,
@@ -33,24 +36,44 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
         localForge: true,
         validateLocalForge: false,
     });
+     */
+
+    const Tezos = new TezosToolkit(networkUrl);
+
+    Tezos.setProvider({
+        signer: new InMemorySigner(functions.config().wallet.key),
+    });
 
     const withdraw = async () => {
-        await tezos.importKey(
+        functions.logger.info(`Processing withdrawal...`);
+        /*
+        await tezos.(
             functions.config().wallet.key,
             functions.config().wallet.passphrase,
         );
+         */
 
-        functions.logger.info(`Loading contract...`);
-        const contract = await tezos.loadContract(poolContract);
-        const {methods} = contract;
+        Tezos.contract
+            .at(poolContract)
+            .then((c) => {
+                return c.methodsObject.withdraw({
+                    nullifier: commitment,
+                    proof: proofRecord,
+                    withdrawal_address: destinationAddress,
+                })
+                    .send();
+            })
+            .then((op) => {
+                functions.logger.info("Successfully processed withdrawal!");
+                console.log(`Waiting for ${op.hash} to be confirmed...`);
+                op.confirmation()
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-        functions.logger.info("Methods: ", methods);
-        functions.logger.info(`Contract loaded!`);
-        functions.logger.info(`Processing withdrawal...`);
-
-        // const storage = await contract.storage();
-
-        const {hash} = await contract.methods.withdraw({
+        /*
+        const {hash} = await contract..withdraw({
             nullifier: commitment,
             a: proofRecord.a,
             b: proofRecord.b,
@@ -63,26 +86,26 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
                     storageLimit: 60000,
                 }
             );
-
-        functions.logger.info(`Waiting for operation ${hash}`);
-        const blockHash = await tezos.awaitOperation(hash);
-        functions.logger.info(`Successfully processed withdrawal!`);
-        functions.logger.info(`Operation found in block ${blockHash}`);
+        */
     }
 
     const transfer = async () => {
-        await tezos.importKey(
-            functions.config().wallet.key,
-            functions.config().wallet.passphrase,
-        );
-
-        const amount = poolValue * 1000000 * 0.9;
-        const balance = await tezos.getBalance(functions.config().wallet.address);
+        const amount = poolValue * 0.9;
+        const balance = await Tezos.tz.getBalance(functions.config().wallet.address);
 
         if (balance < amount) response.status(503).send(`Contract balance too low (${balance} < ${amount})!`);
 
         functions.logger.info(`Sending ${amount} XTZ to ${destinationAddress}...`);
 
+        Tezos.contract
+            .transfer({to: destinationAddress, amount: amount})
+            .then((op) => {
+                console.log(`Waiting for ${op.hash} to be confirmed...`);
+                return op.confirmation(1).then(() => op.hash);
+            })
+            .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
+
+        /*
         const {hash} = await tezos.transfer({
             to: destinationAddress,
             amount: amount,
@@ -91,6 +114,7 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
         functions.logger.info(`Waiting for operation ${hash}`);
         const blockHash = await tezos.awaitOperation(hash);
         functions.logger.info(`Operation found in block ${blockHash}`);
+         */
     }
 
     withdraw()

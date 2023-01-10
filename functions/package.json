@@ -13,10 +13,11 @@
   },
   "main": "index.js",
   "dependencies": {
+    "@taquito/signer": "^15.0.1",
+    "@taquito/taquito": "^15.0.1",
     "@taquito/utils": "^15.0.1",
     "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.18.0",
-    "sotez": "^13.0.1"
+    "firebase-functions": "^3.18.0"
   },
   "devDependencies": {
     "firebase-functions-test": "^0.2.0"
