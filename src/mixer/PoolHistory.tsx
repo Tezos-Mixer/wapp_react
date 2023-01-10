@@ -1,6 +1,7 @@
 import styles from "../styles/Home.module.css"
 import {useContext, useEffect, useState} from "react";
 import {NetworkContext} from "../tezos/NetworkContext";
+import TxPlaceholder from "../layout/TxPlaceholder";
 
 interface Transaction {
     block: string;
@@ -75,7 +76,7 @@ export default function PoolHistory(props: { selected: string }) {
         <div className={styles.card}>
             <div className={styles.center}><h3>Last pool contract calls</h3></div>
             <hr/>
-            {transactions.map((transaction: Transaction) => (
+            {transactions.length > 0 ? transactions.map((transaction: Transaction) => (
                 transaction.parameters.entrypoint === props.selected &&
                 <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}>
                     <div className={styles.transaction}>
@@ -90,7 +91,13 @@ export default function PoolHistory(props: { selected: string }) {
                         </div>
                     </div>
                 </a>
-            ))}
+            )) : <div>
+                <TxPlaceholder/>
+                <TxPlaceholder/>
+                <TxPlaceholder/>
+                <TxPlaceholder/>
+                <TxPlaceholder/>
+            </div>}
         </div>
     )
 }

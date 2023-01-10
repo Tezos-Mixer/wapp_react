@@ -1,0 +1,30 @@
+.stats {
+    background-color: var(--lighter-dark-blue);
+    padding: 20px;
+    border-radius: 30px;
+    margin: 0 20px;
+}
+
+.flex {
+    display: flex;
+}
+
+.center {
+    display: grid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.figure {
+    margin: 0 100px !important;
+    background: -webkit-linear-gradient(1turn, var(--blue), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.muted {
+    opacity: .3;
+    margin-left: 5px;
+    font-size: small;
+}

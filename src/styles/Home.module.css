@@ -49,6 +49,11 @@
     cursor: pointer;
 }
 
+.between {
+    display: flex;
+    justify-content: space-between;
+}
+
 .muted {
     opacity: .3;
     margin-left: 5px;

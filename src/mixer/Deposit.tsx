@@ -14,7 +14,7 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
     const [showModal, setShowModal] = useState(false);
     const {tezos, address, balance} = useContext(WalletContext);
     const [loading, setLoading] = useState(false);
-    // const depositNote = generateDepositNote();
+    //const depositNote = generateDepositNote();
     const [txUrl, setTxUrl] = useState("");
 
     const deposit = async (_commitment: string) => {

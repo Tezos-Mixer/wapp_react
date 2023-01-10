@@ -1,6 +1,7 @@
 import styles from "../styles/Home.module.css";
 import {useContext, useEffect, useState} from "react";
 import {NetworkContext} from "../tezos/NetworkContext";
+import Stats from "../layout/Stats";
 
 interface ContractStats {
     account_id: number;
@@ -190,9 +191,11 @@ export function PoolStats() {
         <div className={styles.card}>
             <div className={styles.center}><h3>Pool stats</h3></div>
             <hr/>
-            <p><b>Total balance: </b>{accountStats.spendable_balance} ꜩ</p>
-            <p><b>Deposits: </b>{contractStats.call_stats.deposit}</p>
-            <p><b>Withdraws: </b>{contractStats.call_stats.withdraw}</p>
+            <div className={styles.between}>
+                <Stats name={"Total balance"} value={`${accountStats.spendable_balance} ꜩ`}/>
+                <Stats name={"Deposits"} value={contractStats.call_stats.deposit}/>
+                <Stats name={"Withdrawals"} value={contractStats.call_stats.withdraw}/>
+            </div>
         </div>
     )
 }

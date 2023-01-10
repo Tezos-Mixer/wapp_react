@@ -47,9 +47,10 @@ export function Home() {
                         </div>
                         <div className={styles.column}>
                             <PoolHistory selected={selected}/>
-                            <PoolStats/>
                         </div>
                     </div>
+                    <p/>
+                    <PoolStats/>
                 </div>
             </main>
         </div>
