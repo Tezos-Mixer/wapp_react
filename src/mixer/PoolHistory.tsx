@@ -1,87 +1,40 @@
 import styles from "../styles/Home.module.css"
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {NetworkContext} from "../tezos/NetworkContext";
-import TxPlaceholder from "../layout/TxPlaceholder";
+import {Transaction} from "../utils/contracts";
 
-interface Transaction {
-    block: string;
-    burned: number;
-    code_hash: string;
-    confirmations: number;
-    counter: number;
-    cycle: number;
-    fee: number;
-    gas_limit: number;
-    gas_used: number;
-    hash: string;
-    height: number;
-    id: number;
-    is_contract: boolean;
-    is_success: boolean;
-    op_n: number;
-    op_p: number;
-    parameters: {
-        entrypoint: string;
-        value: string;
-    };
-    receiver: string;
-    sender: string;
-    status: string;
-    storage_limit: number;
-    storage_paid: number;
-    time: string;
-    type: string;
-    volume: number;
-}
 
-export default function PoolHistory(props: { selected: string }) {
-    const contractAddress = process.env.REACT_APP_10_XTZ_POOL_CONTRACT_ADDRESS;
+export default function PoolHistory(props: { selected: string; transactions: Transaction[]; transactionsLoaded: boolean }) {
     const {mainnet} = useContext(NetworkContext);
-
-    const url = `https://api.${!mainnet && "ghost."}tzstats.com/explorer/contract/${contractAddress}/calls`;
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [transactionsLoaded, setTransactionsLoaded] = useState(false);
 
     function getDaysSinceDate(date: string) {
         const currentDate = new Date();
         const txDate = new Date(date);
 
         const timeDifference = Math.abs(currentDate.getTime() - txDate.getTime());
-        return Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60))
+        const hoursDifference = Math.floor(minutesDifference / 60);
+        const daysDifference = Math.floor(hoursDifference / 24);
+
+        const result = daysDifference > 0 ? daysDifference : hoursDifference > 0 ? hoursDifference : minutesDifference;
+        const resultType = daysDifference > 0 ? "day" : hoursDifference > 0 ? "hour" : "minute";
+
+        return result > 0 ? result + ` ${resultType}${result > 1 ? "s" : ""} ago` : "Just now";
     }
 
-    useEffect(() => {
-        if (!transactionsLoaded) {
-            setTransactionsLoaded(true);
-
-            fetch(url)
-                .then(response => response.json())
-                .then((calls: Transaction[]) => {
-                    return calls
-                        .filter((call: Transaction) => call.type === "transaction")
-                        .sort((a, b) => b.id - a.id)
-                })
-                .then((transactions: Transaction[]) => {
-                    const array: Transaction[] = [];
-                    transactions.forEach((transaction: Transaction) => {
-                        array.push(transaction);
-                    })
-                    setTransactions(array);
-                })
-                .catch((error) => console.log(error))
-        }
-    }, [url, transactionsLoaded, props.selected]);
 
     return (
         <div className={styles.card}>
             <div className={styles.center}><h3>Last pool contract calls</h3></div>
             <hr/>
-            {transactions.length > 0 ? transactions.map((transaction: Transaction) => (
+            {props.transactions.length > 0 ? props.transactions.map((transaction: Transaction) => (
                 transaction.parameters.entrypoint === props.selected &&
-                <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}>
+                <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}
+                   target="_blank">
                     <div className={styles.transaction}>
                         <span className={styles.date}>
-                            {getDaysSinceDate(transaction.time) + ` day${getDaysSinceDate(transaction.time) > 1 ? "s" : ""} ago`}
+                            {getDaysSinceDate(transaction.time)}
                         </span>
                         <div className={""}>
                             <b>{transaction.parameters.entrypoint}</b>
@@ -91,12 +44,11 @@ export default function PoolHistory(props: { selected: string }) {
                         </div>
                     </div>
                 </a>
-            )) : <div>
-                <TxPlaceholder/>
-                <TxPlaceholder/>
-                <TxPlaceholder/>
-                <TxPlaceholder/>
-                <TxPlaceholder/>
+            )) : <div className={styles.transaction}>
+                        <span className={styles.date}>
+                            No data
+                        </span>
+                No data
             </div>}
         </div>
     )

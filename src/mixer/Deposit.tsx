@@ -6,7 +6,7 @@ import WalletButton from "../components/WalletButton";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import {char2Bytes} from "@taquito/utils";
-import {hash} from "../utils/maths";
+import {generateRandomString, hash} from "../utils/maths";
 import {getPoolAddress} from "../utils/pool";
 import Note from "./Note";
 
@@ -14,10 +14,10 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
     const [showModal, setShowModal] = useState(false);
     const {tezos, address, balance} = useContext(WalletContext);
     const [loading, setLoading] = useState(false);
-    //const depositNote = generateDepositNote();
+    const depositNote = generateRandomString(40);
     const [txUrl, setTxUrl] = useState("");
 
-    const deposit = async (_commitment: string) => {
+    const depositFunds = async (_commitment: string) => {
         const contractAddress = getPoolAddress(props.pool);
         const hashedCommitment = await hash(_commitment);
         const commitment = char2Bytes(hashedCommitment);
@@ -102,7 +102,7 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                     className={balance < props.pool ? styles.disabled : styles.action}
                     onClick={() => {
                         setLoading(true);
-                        deposit("depositNote");
+                        depositFunds(depositNote).catch((error) => console.log(error));
                     }}
                     disabled={balance < props.pool}
                 >

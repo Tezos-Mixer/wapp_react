@@ -3,6 +3,11 @@
     padding: 20px;
     border-radius: 30px;
     margin: 0 20px;
+    transition: scale .2s ease-in-out;
+}
+
+.stats:hover {
+    scale: 1.03;
 }
 
 .flex {
@@ -24,7 +29,7 @@
 }
 
 .muted {
-    opacity: .3;
+    opacity: .7;
     margin-left: 5px;
     font-size: small;
 }

@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import styles from "../styles/Header.module.css";
 import Switch from "../components/Switch";
-import {ThemeContext} from "../layout/ThemeContext";
+import {ThemeContext} from "./ThemeContext";
 import WalletButton from "../components/WalletButton";
 
 export default function Header() {
@@ -22,7 +22,7 @@ export default function Header() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.title}>TezMix</div>
+            <div className={styles.title}>Angela.cash</div>
             <div className={styles.flex}>
                 <Switch
                     isOn={checked}

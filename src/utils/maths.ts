@@ -1,26 +1,17 @@
-import {randomBytes} from "crypto";
+export function generateRandomString(length: number) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let randomString = '';
 
-export function generateDepositNote(): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let depositNote = 'note-';
-    const requiredLength = 50;
-
-    while (depositNote.length < requiredLength) {
-        const bytes = randomBytes(40);
-
-        // eslint-disable-next-line no-loop-func
-        bytes.forEach(b => {
-            // Length of `chars` is 62. We only take bytes between 0 and 62*4-1
-            // (both inclusive). The value is then evenly mapped to indices of `char`
-            // via a modulo operation.
-            const maxValue = 62 * 4 - 1;
-            if (depositNote.length < requiredLength && b <= maxValue) {
-                depositNote += chars.charAt(b % 62);
-            }
-        });
+    for (let i = 0; i < length; i++) {
+        randomString += characters.charAt(
+            Math.floor(
+                Math.random() * charactersLength
+            )
+        );
     }
 
-    return depositNote;
+    return randomString;
 }
 
 export async function hash(string: string) {

@@ -9,7 +9,7 @@
 }
 
 .center {
-    display: grid;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -47,6 +47,14 @@
 
 .clickable {
     cursor: pointer;
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bold;
+    background: -webkit-linear-gradient(1turn, var(--blue), var(--yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .between {
