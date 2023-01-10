@@ -1,6 +1,5 @@
 import {useContext, useState} from "react";
 import styles from "../styles/Home.module.css";
-import Modal from "../components/Modal";
 import {WalletContext} from "../tezos/WalletContext";
 import WalletButton from "../components/WalletButton";
 import Loader from "../components/Loader";
@@ -8,19 +7,25 @@ import toast from "react-hot-toast";
 import {char2Bytes} from "@taquito/utils";
 import {generateRandomString, hash} from "../utils/maths";
 import {getPoolAddress} from "../utils/pool";
-import Note from "./Note";
 
-export default function Deposit(props: { pool: number, setPool: (pool: number) => void, mixingFees: number }) {
-    const [showModal, setShowModal] = useState(false);
+export default function Deposit(props: { pool: number, setPool: (pool: number) => void, mixingFees: number; setShowModal: (show: boolean) => void; setTxUrl: (url: string) => void; setDepositNote: (note: string) => void }) {
     const {tezos, address, balance} = useContext(WalletContext);
     const [loading, setLoading] = useState(false);
-    const depositNote = generateRandomString(40);
-    const [txUrl, setTxUrl] = useState("");
 
-    const depositFunds = async (_commitment: string) => {
+    const depositFunds = async () => {
         const contractAddress = getPoolAddress(props.pool);
-        const hashedCommitment = await hash(_commitment);
+
+        const depositNote = "DN-" + generateRandomString(40);
+        props.setDepositNote(depositNote);
+
+        const hashedCommitment = await hash(depositNote);
         const commitment = char2Bytes(hashedCommitment);
+
+        if (!contractAddress) {
+            toast.error(`No ${props.pool} tz pool contract has been deployed yet`);
+            setLoading(false);
+            return;
+        }
 
         if (tezos) {
             tezos.wallet
@@ -39,9 +44,9 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                 })
                 .then((hash: string) => {
                     const _txUrl = `https://${process.env.REACT_APP_TESTNET_NAME?.toLowerCase()}.tzstats.com/${hash}`
-                    setTxUrl(_txUrl);
+                    props.setTxUrl(_txUrl);
                     toast.success("Successful transaction!");
-                    setShowModal(true);
+                    props.setShowModal(true);
                     setLoading(false);
                 })
                 .catch((error: any) => {
@@ -53,10 +58,6 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
 
     return (
         <div>
-            <Modal content={<Note txUrl={txUrl} depositNote={"depositNote"} handleClose={() => setShowModal(false)}/>}
-                   show={showModal}
-                   handleClose={() => setShowModal(false)}
-            />
             {address && <>
                 <div className={styles.center}>
                     <h3>Current balance</h3>
@@ -102,7 +103,7 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                     className={balance < props.pool ? styles.disabled : styles.action}
                     onClick={() => {
                         setLoading(true);
-                        depositFunds(depositNote).catch((error) => console.log(error));
+                        depositFunds().catch((error) => console.log(error));
                     }}
                     disabled={balance < props.pool}
                 >

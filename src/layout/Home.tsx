@@ -8,8 +8,14 @@ import Pools from "../mixer/Pools";
 import {getPoolAddress} from "../utils/pool";
 import {AccountStats, ContractStats, defaultAccountStats, defaultContractStats, Transaction} from "../utils/contracts";
 import {NetworkContext} from "../tezos/NetworkContext";
+import Note from "../mixer/Note";
+import Modal from "../components/Modal";
 
 export function Home() {
+    const [showModal, setShowModal] = useState(false);
+    const [txUrl, setTxUrl] = useState("");
+    const [depositNote, setDepositNote] = useState("");
+
     const [selected, setSelected] = useState("deposit");
     const [pool, setPool] = useState(1);
     const mixingFees = 0.1;
@@ -88,7 +94,6 @@ export function Home() {
                         transactions.forEach((transaction: Transaction) => {
                             array.push(transaction);
                         })
-                        console.log(array);
                         setTransactions(array);
                     })
                     .catch((error) => console.log(error))
@@ -100,6 +105,11 @@ export function Home() {
 
     return (
         <div className={styles.container}>
+            <Modal content={
+                <Note txUrl={txUrl} depositNote={depositNote} handleClose={() => setShowModal(false)}/>}
+                   show={showModal}
+                   handleClose={() => setShowModal(false)}
+            />
             <main className={styles.main}>
                 <div className={styles.center}>
                     <p/>
@@ -127,7 +137,9 @@ export function Home() {
                                 <Pools pool={pool} setPool={setPool}/>
                                 <hr/>
                                 {selected === "deposit" ?
-                                    <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}/>
+                                    <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}
+                                             setShowModal={setShowModal} setTxUrl={setTxUrl}
+                                             setDepositNote={setDepositNote}/>
                                     :
                                     <Withdraw pool={pool} setPool={setPool}/>
                                 }

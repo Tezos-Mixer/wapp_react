@@ -28,28 +28,30 @@ export default function PoolHistory(props: { selected: string; transactions: Tra
         <div className={styles.card}>
             <div className={styles.center}><h3>Last pool contract calls</h3></div>
             <hr/>
-            {props.transactions.length > 0 ? props.transactions.map((transaction: Transaction) => (
-                transaction.parameters.entrypoint === props.selected &&
-                <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}
-                   target="_blank">
-                    <div className={styles.transaction}>
+            <div className={styles.list}>
+                {props.transactions.length > 0 ? props.transactions.map((transaction: Transaction) => (
+                    transaction.parameters.entrypoint === props.selected &&
+                    <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}
+                       target="_blank">
+                        <div className={styles.transaction}>
                         <span className={styles.date}>
                             {getDaysSinceDate(transaction.time)}
                         </span>
-                        <div className={""}>
-                            <b>{transaction.parameters.entrypoint}</b>
-                            <span className={styles.muted}>
+                            <div className={""}>
+                                <b>{transaction.parameters.entrypoint}</b>
+                                <span className={styles.muted}>
                                 ({transaction.hash.slice(0, 5) + "..."})
                             </span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            )) : <div className={styles.transaction}>
+                    </a>
+                )) : <div className={styles.transaction}>
                         <span className={styles.date}>
                             No data
                         </span>
-                No data
-            </div>}
+                    No data
+                </div>}
+            </div>
         </div>
     )
 }

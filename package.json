@@ -16,6 +16,7 @@
     "a11y-react-emoji": "^1.2.0",
     "buffer": "^6.0.3",
     "crypto": "^1.0.1",
+    "firebase": "^9.15.0",
     "install": "^0.13.0",
     "patch-package": "^6.5.1",
     "react": "^18.2.0",

@@ -2,14 +2,13 @@ import {useContext, useState} from "react";
 import styles from "../styles/Home.module.css"
 import toast from "react-hot-toast";
 import {getPoolAddress} from "../utils/pool";
-import {WalletContext} from "../tezos/WalletContext";
 import {hash} from "../utils/maths";
-import {char2Bytes, validateAddress} from "@taquito/utils";
+import {validateAddress} from "@taquito/utils";
 import Loader from "../components/Loader";
-import WalletButton from "../components/WalletButton";
+import {NetworkContext} from "../tezos/NetworkContext";
 
 export default function Withdraw(props: { pool: number, setPool: (pool: number) => void }) {
-    const {tezos, address} = useContext(WalletContext);
+    const {mainnet} = useContext(NetworkContext);
     const [loading, setLoading] = useState(false);
 
     const [form, setForm] = useState({
@@ -22,14 +21,25 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
         setForm(prevState => ({...prevState, [field]: e.target.value}))
     }
 
-    const withdraw = async (nullifier: string, merkleProof: string, withdrawAddress: string) => {
+    const withdrawFromPool = async (nullifier: string, merkleProof: string, withdrawAddress: string) => {
         if (validateAddress(withdrawAddress) === 3) {
             const contractAddress = getPoolAddress(props.pool);
-
             const hashedCommitment = await hash(nullifier);
-            const commitment = char2Bytes(hashedCommitment);
-            const proofRecord = {a: merkleProof, b: "a"}
 
+            await fetch(process.env.REACT_APP_RELAYER_URL + `mainnet=${mainnet}&address=${withdrawAddress}&proof=${merkleProof}&pool=${props.pool}&contract=${contractAddress}&note=${hashedCommitment}`)
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    toast.success("Successfully executed function!")
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toast.error("An error occurred")
+                })
+
+            setLoading(false);
+
+            {/*
             if (tezos) {
                 tezos.wallet
                     .at(contractAddress as string)
@@ -51,6 +61,8 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                         setLoading(false);
                     });
             }
+            */
+            }
         } else {
             toast.error("Invalid address!");
             setLoading(false);
@@ -62,7 +74,7 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setLoading(true);
-                withdraw(form.depositNote, form.merkleProof, form.recipientAddress);
+                withdrawFromPool(form.depositNote, form.merkleProof, form.recipientAddress);
             }}>
                 <div className={"center"}>
                     <b>
@@ -102,12 +114,12 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                 <hr/>
                 <p/>
                 <div className={styles.center}>
-                    {address ? loading ? <Loader show={true}/> : <button
+                    {loading ? <Loader show={true}/> : <button
                         className={styles.action}
                         type={"submit"}
                     >
                         Withdraw
-                    </button> : <WalletButton/>}
+                    </button>}
                 </div>
                 <p/>
             </form>
