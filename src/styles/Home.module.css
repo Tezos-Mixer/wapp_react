@@ -34,6 +34,21 @@
     flex-direction: row;
 }
 
+.srow {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (max-width: 691px) {
+    .srow {
+        flex-direction: column;
+    }
+
+    .column {
+        margin: 10px 0;
+    }
+}
+
 @media screen and (max-width: 991px) {
     .row {
         flex-direction: column;
