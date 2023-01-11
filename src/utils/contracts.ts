@@ -8,11 +8,18 @@ interface ContractAddresses {
     thousand: string;
 }
 
-export const contractAddresses: ContractAddresses = {
+export const poolContractAddresses: ContractAddresses = {
     one: process.env.REACT_APP_1_XTZ_POOL_CONTRACT_ADDRESS as string,
     ten: process.env.REACT_APP_10_XTZ_POOL_CONTRACT_ADDRESS as string,
     hundred: process.env.REACT_APP_100_XTZ_POOL_CONTRACT_ADDRESS as string,
     thousand: process.env.REACT_APP_1000_XTZ_POOL_CONTRACT_ADDRESS as string,
+}
+
+export const treeContractAddresses: ContractAddresses = {
+    one: process.env.REACT_APP_1_XTZ_TREE_CONTRACT_ADDRESS as string,
+    ten: process.env.REACT_APP_10_XTZ_TREE_CONTRACT_ADDRESS as string,
+    hundred: process.env.REACT_APP_100_XTZ_TREE_CONTRACT_ADDRESS as string,
+    thousand: process.env.REACT_APP_1000_XTZ_TREE_CONTRACT_ADDRESS as string,
 }
 
 export interface ContractStats {

@@ -21,6 +21,7 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
     };
 
     const networkUrl = mainnet === "true" ? functions.config().network.mainnet : functions.config().network.test;
+
     response.set('Access-Control-Allow-Origin', '*');
 
     functions.logger.info("New withdrawal request to wallet ", destinationAddress, " via ", networkUrl);

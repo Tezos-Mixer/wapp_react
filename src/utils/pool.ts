@@ -1,23 +1,50 @@
-import {contractAddresses} from "./contracts";
+import {poolContractAddresses, treeContractAddresses} from "./contracts";
 
 export const getPoolAddress = (pool: number) => {
     let contractAddress;
 
     switch (pool) {
         case 1:
-            contractAddress = contractAddresses.one;
+            contractAddress = poolContractAddresses.one;
             break;
         case 10:
-            contractAddress = contractAddresses.ten;
+            contractAddress = poolContractAddresses.ten;
             break;
         case 100:
-            contractAddress = contractAddresses.hundred;
+            contractAddress = poolContractAddresses.hundred;
             break;
         case 1000:
-            contractAddress = contractAddresses.thousand;
+            contractAddress = poolContractAddresses.thousand;
             break;
         default:
-            console.log("The request pool does not exist.")
+            contractAddress = ""
+            console.log("The requested pool contract does not exist.")
+            break;
+    }
+
+    return contractAddress;
+}
+
+export const getTreeAddress = (pool: number) => {
+    let contractAddress;
+
+    switch (pool) {
+        case 1:
+            contractAddress = treeContractAddresses.one;
+            break;
+        case 10:
+            contractAddress = treeContractAddresses.ten;
+            break;
+        case 100:
+            contractAddress = treeContractAddresses.hundred;
+            break;
+        case 1000:
+            contractAddress = treeContractAddresses.thousand;
+            break;
+        default:
+            contractAddress = ""
+            console.log("The requested tree contract does not exist.")
+            break;
     }
 
     return contractAddress;

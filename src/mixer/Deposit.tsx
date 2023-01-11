@@ -6,36 +6,38 @@ import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import {char2Bytes} from "@taquito/utils";
 import {generateRandomString, hash} from "../utils/maths";
-import {getPoolAddress} from "../utils/pool";
+import {getPoolAddress, getTreeAddress} from "../utils/pool";
 
 export default function Deposit(props: { pool: number, setPool: (pool: number) => void, mixingFees: number; setShowModal: (show: boolean) => void; setTxUrl: (url: string) => void; setDepositNote: (note: string) => void }) {
     const {tezos, address, balance} = useContext(WalletContext);
     const [loading, setLoading] = useState(false);
 
     const depositFunds = async () => {
-        const contractAddress = getPoolAddress(props.pool);
+        const poolContractAddress = getPoolAddress(props.pool);
+        const treeContractAddress = getTreeAddress(props.pool);
 
         const depositNote = "DN-" + generateRandomString(40);
         props.setDepositNote(depositNote);
 
-        const hashedCommitment = await hash(depositNote);
-        const commitment = char2Bytes(hashedCommitment);
+        const hashedDepositNote = await hash(depositNote);
+        const coin = char2Bytes(hashedDepositNote);
 
-        if (!contractAddress) {
-            toast.error(`No ${props.pool} tz pool contract has been deployed yet`);
+        if (!poolContractAddress || !treeContractAddress) {
+            toast.error(`No ${props.pool} tz ${poolContractAddress ? "tree" : (treeContractAddress ? "pool" : "pool/tree")} contract has been deployed yet`);
             setLoading(false);
             return;
         }
 
         if (tezos) {
             tezos.wallet
-                .at((contractAddress!))
+                .at((poolContractAddress!))
                 .then((c: any) => {
-                    return c.methods.deposit(commitment).send({
+                    return c.methods.deposit(coin).send({
                         amount: props.pool
                     });
                 })
                 .then((op: any) => {
+                    props.setShowModal(true);
                     toast("Waiting for transaction to be confirmed...");
                     return op.confirmation(3)
                         .then(() => {
@@ -46,7 +48,6 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                     const _txUrl = `https://${process.env.REACT_APP_TESTNET_NAME?.toLowerCase()}.tzstats.com/${hash}`
                     props.setTxUrl(_txUrl);
                     toast.success("Successful transaction!");
-                    props.setShowModal(true);
                     setLoading(false);
                 })
                 .catch((error: any) => {

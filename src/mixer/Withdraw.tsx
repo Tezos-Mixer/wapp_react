@@ -6,10 +6,12 @@ import {hash} from "../utils/maths";
 import {validateAddress} from "@taquito/utils";
 import Loader from "../components/Loader";
 import {NetworkContext} from "../tezos/NetworkContext";
+import Switch from "../components/Switch";
 
 export default function Withdraw(props: { pool: number, setPool: (pool: number) => void }) {
     const {mainnet} = useContext(NetworkContext);
     const [loading, setLoading] = useState(false);
+    const [relayed, setRelayed] = useState(true);
 
     const [form, setForm] = useState({
         recipientAddress: "",
@@ -19,9 +21,9 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
 
     const handleChange = (e: any, field: string) => {
         setForm(prevState => ({...prevState, [field]: e.target.value}))
-    }
+    };
 
-    const withdrawFromPool = async (nullifier: string, merkleProof: string, withdrawAddress: string) => {
+    const sendToRelayer = async (nullifier: string, merkleProof: string, withdrawAddress: string) => {
         if (validateAddress(withdrawAddress) === 3) {
             const contractAddress = getPoolAddress(props.pool);
             const hashedCommitment = await hash(nullifier);
@@ -49,7 +51,7 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setLoading(true);
-                withdrawFromPool(form.depositNote, form.merkleProof, form.recipientAddress);
+                sendToRelayer(form.depositNote, form.merkleProof, form.recipientAddress);
             }}>
                 <div className={"center"}>
                     <b>
@@ -87,15 +89,29 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                     onChange={e => handleChange(e, "merkleProof")}
                 />
                 <hr/>
-                <p/>
                 <div className={styles.center}>
-                    {loading ? <Loader show={true}/> : <button
-                        className={styles.action}
-                        type={"submit"}
-                    >
-                        Withdraw
-                    </button>}
+                    <b>
+                        <div className={relayed ? styles.relayed : styles.self}>Process through relayer</div>
+                    </b>
                 </div>
+                <div className={styles.center}>
+                    <Switch isOn={relayed}
+                            handleToggle={() => setRelayed(!relayed)}
+                            colorOne="rgba(34,193,195,1)"
+                            colorTwo="rgba(253,187,45,1)"
+                    />
+                </div>
+                <hr/>
+                {<div className={styles.center}>
+                    {loading ? <Loader show={true}/> :
+                        <button
+                            className={styles.action}
+                            type={"submit"}
+                            disabled={!relayed}
+                        >
+                            Withdraw
+                        </button>}
+                </div>}
                 <p/>
             </form>
         </div>

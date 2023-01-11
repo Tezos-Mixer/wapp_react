@@ -83,7 +83,18 @@
 }
 
 .flex {
+    align-items: center;
     display: inline-flex;
+}
+
+.relayed {
+    transition: all .2s ease-in-out;
+    opacity: 1;
+}
+
+.self {
+    transition: all .2s ease-in-out;
+    opacity: .3;
 }
 
 .logo {
@@ -131,6 +142,7 @@
     background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
     cursor: pointer;
     opacity: 1;
+    transition: all .2s ease-in-out;
 }
 
 .action:hover {
@@ -138,10 +150,10 @@
     opacity: .8;
 }
 
-.disabled {
+.action:disabled, .action:disabled:hover {
     background: var(--blue);
     background: linear-gradient(90deg, var(--blue) 0%, var(--yellow) 100%);
-    opacity: .3;
+    opacity: .3 !important;
 }
 
 @keyframes darken {

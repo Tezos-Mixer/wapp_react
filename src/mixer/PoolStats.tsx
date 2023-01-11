@@ -9,14 +9,14 @@ export function PoolStats(props: { contractStats: ContractStats, accountStats: A
             <hr/>
             <div className={styles.center}>
                 <div className={styles.row}>
-                    <div className={styles.column}><Stats name={"Total balance"}
-                                                          value={`${props.accountStats?.spendable_balance || "..."} ꜩ`}/>
+                    <div className={styles.column}>
+                        <Stats name={"Total balance"} value={`${props.accountStats?.spendable_balance || "0"} ꜩ`}/>
                     </div>
-                    <div className={styles.column}><Stats name={"Deposits"}
-                                                          value={props.contractStats?.call_stats.deposit || "..."}/>
+                    <div className={styles.column}>
+                        <Stats name={"Deposits"} value={props.contractStats?.call_stats.deposit || "0"}/>
                     </div>
-                    <div className={styles.column}><Stats name={"Withdrawals"}
-                                                          value={props.contractStats?.call_stats.withdraw || "..."}/>
+                    <div className={styles.column}>
+                        <Stats name={"Withdrawals"} value={props.contractStats?.call_stats.withdraw || "0"}/>
                     </div>
                 </div>
             </div>
