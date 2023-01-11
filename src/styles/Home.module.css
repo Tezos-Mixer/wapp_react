@@ -6,6 +6,8 @@
     padding: 4rem 0;
     justify-content: center;
     align-items: center;
+    width: 80%;
+    margin-left: 10%;
 }
 
 .center {
@@ -25,6 +27,21 @@
 
 .list::-webkit-scrollbar {
     display: none;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+@media screen and (max-width: 991px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .column {
+        margin: 10px 0;
+    }
 }
 
 .column {

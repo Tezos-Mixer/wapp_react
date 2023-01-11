@@ -111,49 +111,46 @@ export function Home() {
                    handleClose={() => setShowModal(false)}
             />
             <main className={styles.main}>
-                <div className={styles.center}>
-                    <p/>
-                    <div className={styles.flex}>
-                        <div className={styles.column}>
-                            <div className={styles.card}>
-                                <div className={styles.center}>
-                                    <div className={styles.flex}>
-                                        <button
-                                            className={selected === "deposit" ? styles.selected : styles.unselected}
-                                            onClick={() => setSelected("deposit")}
-                                        >
-                                            Deposit
-                                        </button>
-                                        <button
-                                            className={selected === "withdraw" ? styles.selected : styles.unselected}
-                                            onClick={() => setSelected("withdraw")}
-                                        >
-                                            Withdraw
-                                        </button>
-                                    </div>
+                <div className={styles.row}>
+                    <div className={styles.column}>
+                        <div className={styles.card}>
+                            <div className={styles.center}>
+                                <div className={styles.flex}>
+                                    <button
+                                        className={selected === "deposit" ? styles.selected : styles.unselected}
+                                        onClick={() => setSelected("deposit")}
+                                    >
+                                        Deposit
+                                    </button>
+                                    <button
+                                        className={selected === "withdraw" ? styles.selected : styles.unselected}
+                                        onClick={() => setSelected("withdraw")}
+                                    >
+                                        Withdraw
+                                    </button>
                                 </div>
-                                <hr/>
-                                <p/>
-                                <Pools pool={pool} setPool={setPool}/>
-                                <hr/>
-                                {selected === "deposit" ?
-                                    <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}
-                                             setShowModal={setShowModal} setTxUrl={setTxUrl}
-                                             setDepositNote={setDepositNote}/>
-                                    :
-                                    <Withdraw pool={pool} setPool={setPool}/>
-                                }
                             </div>
-                        </div>
-                        <div className={styles.column}>
-                            <PoolHistory selected={selected} transactions={transactions}
-                                         transactionsLoaded={transactionsLoaded}/>
+                            <hr/>
+                            <p/>
+                            <Pools pool={pool} setPool={setPool}/>
+                            <hr/>
+                            {selected === "deposit" ?
+                                <Deposit pool={pool} setPool={setPool} mixingFees={mixingFees}
+                                         setShowModal={setShowModal} setTxUrl={setTxUrl}
+                                         setDepositNote={setDepositNote}/>
+                                :
+                                <Withdraw pool={pool} setPool={setPool}/>
+                            }
                         </div>
                     </div>
-                    <p/>
-                    <PoolStats contractStats={contractStats.account_id ? contractStats : defaultContractStats}
-                               accountStats={accountStats.spendable_balance ? accountStats : defaultAccountStats}/>
+                    <div className={styles.column}>
+                        <PoolHistory selected={selected} transactions={transactions}
+                                     transactionsLoaded={transactionsLoaded}/>
+                    </div>
                 </div>
+                <p/>
+                <PoolStats contractStats={contractStats.account_id ? contractStats : defaultContractStats}
+                           accountStats={accountStats.spendable_balance ? accountStats : defaultAccountStats}/>
             </main>
         </div>
     );
