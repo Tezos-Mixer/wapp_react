@@ -155,7 +155,12 @@
     border-radius: 20px;
     scale: 1;
     transition: all .2s ease-in-out;
+    opacity: .8;
     min-width: 350px;
+}
+
+.transaction:hover {
+    opacity: 1;
 }
 
 .date {

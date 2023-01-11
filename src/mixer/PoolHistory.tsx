@@ -32,7 +32,7 @@ export default function PoolHistory(props: { selected: string; transactions: Tra
                 {props.transactions.length > 0 ? props.transactions.map((transaction: Transaction) => (
                     transaction.parameters.entrypoint === props.selected &&
                     <a key={transaction.id} href={`https://${!mainnet && "ghost."}tzstats.com/${transaction.hash}`}
-                       target="_blank">
+                       target="_blank" rel="noreferrer">
                         <div className={styles.transaction}>
                         <span className={styles.date}>
                             {getDaysSinceDate(transaction.time)}

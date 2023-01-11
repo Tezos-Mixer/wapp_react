@@ -38,31 +38,6 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                 })
 
             setLoading(false);
-
-            {/*
-            if (tezos) {
-                tezos.wallet
-                    .at(contractAddress as string)
-                    .then((c: any) => {
-                        return c.methodsObject.withdraw({
-                            nullifier: commitment,
-                            proof: proofRecord,
-                            withdrawal_address: withdrawAddress
-                        }).send();
-                    })
-                    .then((op: any) => op.confirmation())
-                    .then(() => {
-                        toast.success("Successful transaction!");
-                        setLoading(false);
-                    })
-                    .catch((error: any) => {
-                        toast.error(error.toString());
-                        console.log(error);
-                        setLoading(false);
-                    });
-            }
-            */
-            }
         } else {
             toast.error("Invalid address!");
             setLoading(false);

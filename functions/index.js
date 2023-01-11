@@ -26,18 +26,6 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
     functions.logger.info("New withdrawal request to wallet ", destinationAddress, " via ", networkUrl);
     functions.logger.info("Target contract address: ", poolContract);
 
-    /*
-    const tezos = new Sotez(networkUrl, {
-        defaultFee: 1420,
-        useMutez: true,
-        useLimitEstimator: true,
-        chainId: "main",
-        debugMode: false,
-        localForge: true,
-        validateLocalForge: false,
-    });
-     */
-
     const Tezos = new TezosToolkit(networkUrl);
 
     Tezos.setProvider({
@@ -46,12 +34,6 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
 
     const withdraw = async () => {
         functions.logger.info(`Processing withdrawal...`);
-        /*
-        await tezos.(
-            functions.config().wallet.key,
-            functions.config().wallet.passphrase,
-        );
-         */
 
         Tezos.contract
             .at(poolContract)
@@ -71,22 +53,6 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
             .catch((error) => {
                 console.log(error);
             });
-
-        /*
-        const {hash} = await contract..withdraw({
-            nullifier: commitment,
-            a: proofRecord.a,
-            b: proofRecord.b,
-            withdrawal_address: destinationAddress,
-        })
-            .send(
-                {
-                    fee: 100000,
-                    gasLimit: 800000,
-                    storageLimit: 60000,
-                }
-            );
-        */
     }
 
     const transfer = async () => {
@@ -104,17 +70,6 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
                 return op.confirmation(1).then(() => op.hash);
             })
             .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
-
-        /*
-        const {hash} = await tezos.transfer({
-            to: destinationAddress,
-            amount: amount,
-        });
-
-        functions.logger.info(`Waiting for operation ${hash}`);
-        const blockHash = await tezos.awaitOperation(hash);
-        functions.logger.info(`Operation found in block ${blockHash}`);
-         */
     }
 
     withdraw()
