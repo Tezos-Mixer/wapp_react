@@ -3,8 +3,8 @@
     --lighter-dark-blue: #012c65;
     --white: #ffffff;
     --orange: #ff5c07;
-    --blue: rgba(34, 193, 195, 1);
-    --yellow: rgba(253, 187, 45, 1);
+    --blue: #977ECC;
+    --yellow: #E68BE8;
 }
 
 body {
@@ -14,6 +14,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 code {

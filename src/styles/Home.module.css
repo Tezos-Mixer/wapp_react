@@ -41,6 +41,22 @@
     flex-direction: row;
 }
 
+.holo1 {
+    position: absolute;
+    top: 200px;
+    left: -300px;
+    z-index: 0;
+    rotate: 90deg;
+}
+
+.holo2 {
+    position: absolute;
+    top: 600px;
+    right: -300px;
+    z-index: 0;
+    rotate: 90deg;
+}
+
 @media screen and (max-width: 691px) {
     .srow {
         flex-direction: column;
@@ -48,6 +64,16 @@
 
     .column {
         margin: 10px 0;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .holo1 {
+        display: none;
+    }
+
+    .holo2 {
+        display: none;
     }
 }
 
