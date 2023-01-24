@@ -67,7 +67,8 @@
     }
 }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 991px) {
+
     .holo1 {
         display: none;
     }
@@ -75,9 +76,7 @@
     .holo2 {
         display: none;
     }
-}
-
-@media screen and (max-width: 991px) {
+    
     .row {
         flex-direction: column;
     }
@@ -96,6 +95,7 @@
     margin: 10px 10px;
     padding: 40px;
     border: 1px solid;
+    background-color: var(--dark-blue);
     border-color: var(--lighter-dark-blue);
     border-radius: 30px;
     box-shadow: 0 10px 10px 0 rgba(0, 0, 0, .3);
