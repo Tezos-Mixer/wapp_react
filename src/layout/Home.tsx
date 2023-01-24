@@ -10,8 +10,8 @@ import {AccountStats, ContractStats, defaultAccountStats, defaultContractStats, 
 import {NetworkContext} from "../tezos/NetworkContext";
 import Note from "../mixer/Note";
 import Modal from "../components/Modal";
-import "holographic_blob1.png";
-import "holographic_blob2.png";
+import holo1 from "../assets/holographic_blob1.png";
+import holo2 from "../assets/holographic_blob2.png";
 
 export function Home() {
     const [showModal, setShowModal] = useState(false);
@@ -108,10 +108,10 @@ export function Home() {
     return (
         <div className={styles.container}>
             <div className={styles.holo1}>
-                <img src="holographic_blob1.png" alt={"holographic 3D blob"} width={600} height={300}/>
+                <img src={holo1} alt={"holographic 3D blob"} width={600} height={300}/>
             </div>
             <div className={styles.holo2}>
-                <img src="holographic_blob2.png" alt={"holographic 3D blob"} width={600} height={300}/>
+                <img src={holo2} alt={"holographic 3D blob"} width={600} height={300}/>
             </div>
             <Modal content={
                 <Note txUrl={txUrl} depositNote={depositNote} handleClose={() => setShowModal(false)}/>}
