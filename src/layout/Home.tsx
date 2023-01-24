@@ -108,10 +108,10 @@ export function Home() {
     return (
         <div className={styles.container}>
             <div className={styles.holo1}>
-                <img src={holo} alt={"holographic 3D blob"} width={600} height={300}/>
+                <img src="holographic_blob1.png" alt={"holographic 3D blob"} width={600} height={300}/>
             </div>
             <div className={styles.holo2}>
-                <img src={holo2} alt={"holographic 3D blob"} width={600} height={300}/>
+                <img src="holographic_blob2.png" alt={"holographic 3D blob"} width={600} height={300}/>
             </div>
             <Modal content={
                 <Note txUrl={txUrl} depositNote={depositNote} handleClose={() => setShowModal(false)}/>}
