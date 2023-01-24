@@ -10,8 +10,8 @@ import {AccountStats, ContractStats, defaultAccountStats, defaultContractStats, 
 import {NetworkContext} from "../tezos/NetworkContext";
 import Note from "../mixer/Note";
 import Modal from "../components/Modal";
-import "holographic_blob1.png";
-import "holographic_blob2.png";
+import "./holographic_blob1.png";
+import "./holographic_blob2.png";
 
 export function Home() {
     const [showModal, setShowModal] = useState(false);
