@@ -16,7 +16,7 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
         const poolContractAddress = getPoolAddress(props.pool);
         const treeContractAddress = getTreeAddress(props.pool);
 
-        const depositNote = "DN-" + generateRandomString(40);
+        const depositNote = generateRandomString(50);
         props.setDepositNote(depositNote);
 
         const hashedDepositNote = await hash(depositNote);
@@ -39,17 +39,25 @@ export default function Deposit(props: { pool: number, setPool: (pool: number) =
                 .then((op: any) => {
                     props.setShowModal(true);
                     toast("Waiting for transaction to be confirmed...");
-                    return op.confirmation(3)
+                    op.confirmation()
                         .then(() => {
-                            return op.hash;
+                            setLoading(false);
+                            //return op.hash;
                         });
                 })
-                .then((hash: string) => {
-                    const _txUrl = `https://${process.env.REACT_APP_TESTNET_NAME?.toLowerCase()}.tzstats.com/${hash}`
-                    props.setTxUrl(_txUrl);
-                    toast.success("Successful transaction!");
-                    setLoading(false);
+                .then(() => {
+                    tezos.wallet
+                        .at((treeContractAddress!))
+                        .then((c: any) => {
+                            console.log(c);
+                        })
                 })
+                /*.then((hash: string) => {
+                        const _txUrl = `https://${process.env.REACT_APP_TESTNET_NAME?.toLowerCase()}.tzstats.com/${hash}`
+                        props.setTxUrl(_txUrl);
+                        toast.success("Successful transaction!");
+                        setLoading(false);
+                    })*/
                 .catch((error: any) => {
                     toast.error(error.toString());
                     setLoading(false);

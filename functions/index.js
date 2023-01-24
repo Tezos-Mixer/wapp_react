@@ -60,7 +60,10 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
         const amount = poolValue * 0.9;
         const balance = await Tezos.tz.getBalance(functions.config().wallet.address);
 
-        if (balance < amount) response.status(503).send(`Contract balance too low (${balance} < ${amount})!`);
+        if (balance < amount) {
+            response.status(503).send(`Contract balance too low (${balance} < ${amount})!`);
+            return;
+        }
 
         functions.logger.info(`Sending ${amount} XTZ to ${destinationAddress}...`);
 
@@ -77,15 +80,15 @@ exports.withdrawFromPool = functions.https.onRequest(async (request, response) =
         .then(() => {
             transfer()
                 .then(() => {
-                    response.status(200).send("Successfully processed the operation!")
+                    response.status(200).send({res: "Successfully processed the operation!"});
                 })
                 .catch((error) => {
                     functions.logger.error(error);
-                    response.status(503).send("Failed to process the transfer :(")
+                    response.status(503).send({res: "Failed to process the transfer :("})
                 })
         })
         .catch((error) => {
             functions.logger.error(error);
-            response.status(503).send("Failed to process the tokens withdrawal :(")
+            response.status(503).send({res: "Failed to process the tokens withdrawal :("})
         })
 });

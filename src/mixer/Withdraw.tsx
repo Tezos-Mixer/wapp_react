@@ -16,7 +16,7 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
     const [form, setForm] = useState({
         recipientAddress: "",
         depositNote: "",
-        merkleProof: "",
+        merkleProof: "proof",
     })
 
     const handleChange = (e: any, field: string) => {
@@ -32,11 +32,7 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                 .then((response) => response.json())
                 .then((json) => {
                     console.log(json);
-                    toast.success("Successfully executed function!")
-                })
-                .catch((error) => {
-                    console.log(error);
-                    toast.error("An error occurred")
+                    toast.success("Successfully executed function!");
                 })
 
             setLoading(false);
@@ -75,18 +71,6 @@ export default function Withdraw(props: { pool: number, setPool: (pool: number) 
                     type={"text"}
                     value={form.depositNote}
                     onChange={e => handleChange(e, "depositNote")}
-                />
-                <p/>
-                <div className={"center"}>
-                    <b>
-                        Merkle proof
-                    </b>
-                </div>
-                <input
-                    name={"merkleProof"}
-                    type={"text"}
-                    value={form.merkleProof}
-                    onChange={e => handleChange(e, "merkleProof")}
                 />
                 <hr/>
                 <div className={styles.center}>

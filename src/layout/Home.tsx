@@ -18,7 +18,7 @@ export function Home() {
 
     const [selected, setSelected] = useState("deposit");
     const [pool, setPool] = useState(1);
-    const mixingFees = 0.1;
+    const mixingFees = 0;
     const {mainnet} = useContext(NetworkContext);
 
     const [contractAddress, setContractAddress] = useState(getPoolAddress(pool));
